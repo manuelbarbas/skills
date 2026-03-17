@@ -2,7 +2,7 @@
 
 Use these as routing examples to pick the right detailed references.
 
-## Phase I Encrypted Transaction Flow
+## Encrypted Transaction Flow
 
 1. Build tx payload (`to`, `data`).
 2. Encrypt with BITE SDK.
@@ -10,9 +10,9 @@ Use these as routing examples to pick the right detailed references.
 4. Send tx and capture hash.
 5. Optionally query decrypted data post-execution.
 
-Reference: `references/phase-1-encrypted-transactions.md`
+Reference: `references/encrypted-transactions.md`
 
-## Phase II CTX Flow
+## CTX Flow
 
 1. Ensure chain supports CTX.
 2. Configure compiler/EVM per CTX requirements.
@@ -20,7 +20,7 @@ Reference: `references/phase-1-encrypted-transactions.md`
 4. Submit CTX with required gas/payment params.
 5. Validate decrypt callback path.
 
-Reference: `references/phase-2-ctx.md`
+Reference: `references/conditional-transactions.md`
 
 ## SDK-First Integration
 

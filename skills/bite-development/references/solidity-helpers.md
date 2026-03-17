@@ -1,67 +1,91 @@
-# Rule: bite-solidity-helpers
+# Solidity Helpers
 
-## Why It Matters
-
-The `@skalenetwork/bite-solidity` package is the documented helper library for CTX contracts. Use the public CTX pattern instead of inventing callback signatures or remappings.
+The `@skalenetwork/bite-solidity` package provides precompile wrappers for BITE primitives. Different files support different Solidity versions.
 
 ## Installation
+
+### Foundry
 
 ```bash
 forge install skalenetwork/bite-solidity
 echo "@skalenetwork/bite-solidity/=lib/bite-solidity/" >> remappings.txt
 ```
 
-## Core Imports
+### Hardhat
+
+```bash
+npm install @skalenetwork/bite-solidity
+# or
+bun add @skalenetwork/bite-solidity
+```
+
+## Version-Specific Imports
+
+Select the BITE wrapper based on your contract's Solidity version:
+
+| File | Solidity Version | Notes |
+|------|------------------|-------|
+| `BITE.sol` | `>=0.8.27` | Latest, uses custom errors |
+| `VeryLegacyBITE.sol` | `>=0.8.4` | Uses custom errors |
+| `VeryVeryLegacyBITE.sol` | `>=0.8.0` | Uses `require` strings |
+| `VeryVeryVeryLegacyBITE.sol` | `>=0.6.0` | Uses `require`, requires `ABIEncoderV2` |
 
 ```solidity
+// For Solidity >=0.8.27
 import { BITE } from "@skalenetwork/bite-solidity/BITE.sol";
+
+// For Solidity >=0.8.4
+import { BITE } from "@skalenetwork/bite-solidity/VeryLegacyBITE.sol";
+
+// For Solidity >=0.8.0
+import { BITE } from "@skalenetwork/bite-solidity/VeryVeryLegacyBITE.sol";
+
+// For Solidity >=0.6.0
+import { BITE } from "@skalenetwork/bite-solidity/VeryVeryVeryLegacyBITE.sol";
+pragma experimental ABIEncoderV2;
+```
+
+## Interface Import
+
+The `IBiteSupplicant` interface works with `>=0.8.0`:
+
+```solidity
 import { IBiteSupplicant } from "@skalenetwork/bite-solidity/interfaces/IBiteSupplicant.sol";
 ```
 
-## Compiler Requirements
+## Pattern Overview
 
-```toml
-[profile.default]
-solc_version = "0.8.27"
-evm_version = "istanbul"
-```
-
-## Correct Pattern
+See `references/conditional-transactions.md` for a complete Conditional Transactions (CTX) example.
 
 ```solidity
 pragma solidity >=0.8.27;
 
-import { Address } from "@openzeppelin/contracts/utils/Address.sol";
 import { BITE } from "@skalenetwork/bite-solidity/BITE.sol";
 import { IBiteSupplicant } from "@skalenetwork/bite-solidity/interfaces/IBiteSupplicant.sol";
 
-contract SimpleSecret is IBiteSupplicant {
-    using Address for address payable;
-
-    function revealSecret(bytes calldata encrypted) external payable {
+contract MyConditionalTx is IBiteSupplicant {
+    function submit(bytes calldata encrypted, bytes[] calldata conditions) external payable {
         bytes[] memory encryptedArgs = new bytes[](1);
         encryptedArgs[0] = encrypted;
 
-        bytes[] memory plaintextArgs = new bytes[](0);
-
-        address payable ctxSender = BITE.submitCTX(
+        BITE.submitCTX(
             BITE.SUBMIT_CTX_ADDRESS,
             msg.value / tx.gasprice,
             encryptedArgs,
-            plaintextArgs
+            conditions
         );
-
-        ctxSender.sendValue(msg.value);
     }
 
     function onDecrypt(
         bytes[] calldata decryptedArgs,
-        bytes[] calldata
-    ) external override {}
+        bytes[] calldata plaintextArgs
+    ) external override {
+        // Implement condition check and execution logic
+    }
 }
 ```
 
 ## Resources
 
 - `github.com/skalenetwork/bite-solidity`
-- `references/phase-2-ctx.md`
+- `references/conditional-transactions.md`
