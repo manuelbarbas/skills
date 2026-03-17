@@ -1,0 +1,4 @@
+interface:
+  display_name: "SKALE CLI"
+  short_description: "Exact command playbooks for skale-cli"
+  default_prompt: "Run and troubleshoot skale-cli commands"
