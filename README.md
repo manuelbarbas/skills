@@ -13,8 +13,11 @@ npx -y skills add skalenetwork/skale-skills --list
 Install one skill:
 
 ```bash
-npx -y skills add skalenetwork/skale-skills --skill skale
-npx -y skills add skalenetwork/skale-skills --skill bite-development
+npx -y skills add skalenetwork/skale-skills --skill about-skale
+npx -y skills add skalenetwork/skale-skills --skill deploy-to-skale
+npx -y skills add skalenetwork/skale-skills --skill build-with-bite
+npx -y skills add skalenetwork/skale-skills --skill x402-on-skale
+npx -y skills add skalenetwork/skale-skills --skill ima-bridging-on-skale
 npx -y skills add skalenetwork/skale-skills --skill skale-cli
 ```
 
@@ -26,9 +29,12 @@ npx -y skills add skalenetwork/skale-skills --skill '*' --agent '*' -y
 
 ## Available Skills
 
-- `skale`: detailed SKALE development skill with nested `rules/`, `references/`, and `examples` organization.
-- `bite-development`: BITE protocol skill with phase guardrails, protocol references, and implementation examples.
-- `skale-cli`: command-first SKALE CLI skill with validation rules, command matrix reference, and operation flows.
+- `about-skale`: Learn about SKALE Network architecture, chain types, and gas models
+- `deploy-to-skale`: Deploy contracts to SKALE chains with chain selection, RNG, bridge, and deployment setup
+- `build-with-bite`: Build with BITE Protocol for privacy - encrypted transactions and confidential apps
+- `x402-on-skale`: Build AI agents with x402 payments on SKALE - facilitator setup and payment middleware
+- `ima-bridging-on-skale`: Programmatic IMA (Inter-chain Messaging Agent) bridging for SKALE chains
+- `skale-cli`: Operational command playbooks for SKALE CLI usage
 
 ## Repository Structure
 
@@ -48,7 +54,7 @@ skills/
 ## Data Source Notes
 
 - SKALE chain directory data: `skills/skale/references/chains.json`
-  - source: <https://docs.skale.space/developers/integrate-skale/connect-to-skale>
+   - source: <https://docs.skale.space/developers/integrate-skale/connect-to-skale.md>
 - SKALE CLI command behavior reference: `~/projects/skale-cli/src`
 
 ## Migration Notes

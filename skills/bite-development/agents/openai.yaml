@@ -1,4 +1,0 @@
-interface:
-  display_name: "BITE Development"
-  short_description: "BITE encrypted and CTX transaction workflows"
-  default_prompt: "Implement BITE Protocol workflows on SKALE"
