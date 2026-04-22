@@ -69,11 +69,11 @@ address constant ENCRYPT_TE = 0x000000000000000000000000000000000000001D;
 
 | Rule | Feature | Topic |
 |------|---------|-------|
-| `bite-encrypted-transactions` | Encrypted Transactions | Gas, committees, batch encryption |
-| `bite-sdk-usage` | All | TypeScript SDK reference |
-| `bite-solidity-helpers` | CTX, Re-encryption | Solidity library, imports, IBiteSupplicant |
-| `bite-conditional-transactions` | CTX | CTX contract patterns, RPS example |
-| `bite-re-encryption` | Re-encryption | EncryptECIES, EncryptTE, data sharing |
+| `encrypted-transactions` | Encrypted Transactions | Gas, committees, batch encryption |
+| `sdk-usage` | All | TypeScript SDK reference |
+| `solidity-helpers` | CTX, Re-encryption | Solidity library, imports, IBiteSupplicant |
+| `conditional-transactions` | CTX | CTX contract patterns, RPS example |
+| `re-encryption` | Re-encryption | EncryptECIES, EncryptTE, data sharing |
 
 ## References
 

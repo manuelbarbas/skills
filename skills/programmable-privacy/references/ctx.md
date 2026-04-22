@@ -54,7 +54,7 @@ User encrypts data off-chain
 
 ## Library
 
-Install the version matching your Solidity compiler (see `bite-solidity-helpers` rule for version table):
+Install the version matching your Solidity compiler (see `solidity-helpers` rule for version table):
 
 ```
 forge install skalenetwork/bite-solidity@1.0.1-stable.0

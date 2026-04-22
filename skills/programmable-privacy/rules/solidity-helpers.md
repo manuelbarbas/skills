@@ -4,7 +4,7 @@ impact: high
 tags: [bite, solidity, ctx, re-encryption]
 ---
 
-# Rule: bite-solidity-helpers
+# Rule: solidity-helpers
 
 ## Why It Matters
 
@@ -106,5 +106,5 @@ function onDecrypt(
 ## Resources
 
 - **GitHub**: `github.com/skalenetwork/bite-solidity`
-- **CTX Examples**: See `bite-conditional-transactions.md`
-- **Re-encryption Examples**: See `bite-re-encryption.md`
+- **CTX Examples**: See `conditional-transactions.md`
+- **Re-encryption Examples**: See `re-encryption.md`
