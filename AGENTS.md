@@ -25,6 +25,15 @@ npx -y skills add skalenetwork/skale-skills --skill <skill-name>
 - File names: kebab-case
 - Don't use protocol/library names as skill or rule identifiers (e.g. no "bite-" prefix on file names). Only use package names or specific code objects (e.g. `BITE.sol`, `@skalenetwork/bite`) in prose and code.
 
+## Versioning
+
+Each skill is versioned via metadata in its `SKILL.md` file following standard semantic versioning (`x.y.z`):
+- **Major (x)**: Breaking changes or significant rewrites
+- **Minor (y)**: New features, capabilities, or non-breaking additions
+- **Patch (z)**: Bug fixes, documentation improvements, minor corrections
+
+Version bumps should happen automatically as part of changes — increment the appropriate version component when modifying a skill.
+
 ## Docs
 
 - `https://docs.skale.space/llms.txt.md`
