@@ -7,7 +7,7 @@ Collection of installable Agent Skills for SKALE Network workflows.
 List skills available in this repo:
 
 ```bash
-npx -y skills add skalenetwork/skale-skills --list
+npx -y skills add skalenetwork/skills --list
 ```
 
 Install one skill:
@@ -24,7 +24,7 @@ npx -y skills add skalenetwork/skale-skills --skill skale-cli
 Install all skills from this repo:
 
 ```bash
-npx -y skills add skalenetwork/skale-skills --skill '*' --agent '*' -y
+npx -y skills add skalenetwork/skills --skill '*' --agent '*' -y
 ```
 
 ## Available Skills
