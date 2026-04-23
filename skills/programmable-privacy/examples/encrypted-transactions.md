@@ -48,36 +48,6 @@ async function checkCommitteeStatus() {
 }
 ```
 
-## Rotation-Aware Batch Encryption
-
-```typescript
-async function sendBatchWithRotation(
-    transactions: Array<{ to: string; data: string }>,
-    bite: BITE,
-    wallet: ethers.Wallet
-) {
-    const committees = await bite.getCommitteesInfo();
-
-    if (committees.length === 2) {
-        console.log(`Rotation: epoch ${committees[0].epochId} → ${committees[1].epochId}`);
-    }
-
-    const encrypted = await Promise.all(
-        transactions.map(tx =>
-            BITE.encryptTransactionWithCommitteeInfo(tx, committees)
-        )
-    );
-
-    const receipts = await Promise.all(
-        encrypted.map(tx =>
-            wallet.sendTransaction({ ...tx, gasLimit: 300_000 }).then(t => t.wait())
-        )
-    );
-
-    return receipts.map(r => r.transactionHash);
-}
-```
-
 ## Private ERC20 Transfer
 
 ```typescript
