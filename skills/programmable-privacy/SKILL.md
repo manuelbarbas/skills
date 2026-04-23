@@ -9,13 +9,13 @@ metadata:
 
 # Programmable Privacy
 
-Threshold encryption primitives on SKALE Network. Encrypt transaction data, decrypt conditionally on-chain, and re-encrypt data for specific recipients or network-level privacy.
+Threshold encryption primitives on SKALE Network. Encrypt transaction data, decrypt conditionally onchain, and re-encrypt data for specific recipients or network-level privacy.
 
 ## When to Apply
 
 - Implementing encrypted transactions
 - Building CTX-enabled contracts
-- Re-encrypting on-chain state for data sharing or private storage
+- Re-encrypting onchain state for data sharing or private storage
 - Building confidential tokens
 - Using `@skalenetwork/bite-solidity@1.0.1` or `@skalenetwork/bite@0.8.1`
 - Private games (RPS, poker), voting, auctions
@@ -25,8 +25,8 @@ Threshold encryption primitives on SKALE Network. Encrypt transaction data, decr
 | Feature | Description | Precompile | Status | Chains |
 |---------|-------------|------------|--------|--------|
 | Encrypted Transactions | Encrypt `to` + `calldata` in mempool | Magic Address `0x...0401 | Live | SKALE Base, SKALE Base Sepolia |
-| CTX | Conditional Transactions — decrypt on-chain when triggered | `0x1B` (SubmitCTX) | Beta | SKALE Base, SKALE Base Sepolia |
-| Re-encryption & Encrypted Storage | Encrypt data on-chain with network key or recipient key | `0x1D` / `0x1C` | Beta | SKALE Base, SKALE Base Sepolia |
+| CTX | Conditional Transactions — decrypt onchain when triggered | `0x1B` (SubmitCTX) | Beta | SKALE Base, SKALE Base Sepolia |
+| Re-encryption & Encrypted Storage | Encrypt data onchain with network key or recipient key | `0x1D` / `0x1C` | Beta | SKALE Base, SKALE Base Sepolia |
 | Confidential Tokens | ERC20 with encrypted balances using TE + ECIES | All precompiles | Experimental (testnet only) | SKALE Base Sepolia |
 
 **Status key:** Live = production-ready. Beta = fully available, API may evolve. Experimental = testnet only, may change significantly.
@@ -51,7 +51,7 @@ Threshold encryption primitives on SKALE Network. Encrypt transaction data, decr
 
 ## Compiler Requirements
 
-`@skalenetwork/bite-solidity@1.0.1` ships versions for Solidity 0.5.0 through 0.8.27+. All expose the same precompiles. See `references/library-versions.md` for the full version table and foundry config.
+`@skalenetwork/bite-solidity@1.0.1` ships versions for Solidity 0.5.0 through 0.8.27+. All expose the same precompiles. See `references/solidity-sdk.md` for the version table and `rules/foundry-configuration.md` for foundry config.
 
 ## Key Constants
 
@@ -69,7 +69,9 @@ address constant ENCRYPT_TE = 0x000000000000000000000000000000000000001D;
 
 | Rule | Feature | Topic |
 |------|---------|-------|
-| `encrypted-transactions` | Encrypted Transactions | Gas, committees, batch encryption |
+| `encrypted-transactions-ethers` | Encrypted Transactions | Encrypted txs with ethers.js |
+| `encrypted-transactions-viem` | Encrypted Transactions | Encrypted txs with viem |
+| `foundry-configuration` | All | Foundry setup, compiler versions |
 | `sdk-usage` | All | TypeScript SDK reference |
 | `solidity-helpers` | CTX, Re-encryption | Solidity library, imports, IBiteSupplicant |
 | `conditional-transactions` | CTX | CTX contract patterns, RPS example |
@@ -79,20 +81,20 @@ address constant ENCRYPT_TE = 0x000000000000000000000000000000000000001D;
 
 | Reference | Feature | Content |
 |-----------|---------|---------|
-| `encrypted-transactions` | Encrypted Transactions | SDK methods, encryption flow, gas table |
-| `ctx` | CTX | IBiteSupplicant, SubmitCTX, error codes |
-| `re-encryption` | Re-encryption | EncryptTE, EncryptECIES, PublicKey, patterns |
+| `encrypted-transactions` | Encrypted Transactions | Gas table, what's encrypted |
+| `conditional-transactions` | CTX | IBiteSupplicant, SubmitCTX, callback model |
+| `re-encryption` | Re-encryption | EncryptTE, EncryptECIES, PublicKey, error codes |
 | `confidential-tokens` | Confidential Tokens | Architecture, dual-encryption model |
 | `precompiles` | All | Addresses, call types, comparison |
-| `sdk` | All | TypeScript SDK full API |
-| `library-versions` | All | Solidity version table, install commands |
+| `typescript-sdk` | All | TypeScript SDK setup & API |
+| `solidity-sdk` | All | Solidity SDK setup, imports & API |
 
 ## Visibility Summary
 
 | Data | Encrypted Transactions | CTX | Re-encryption |
 |------|------------------------|-----|---------------|
 | Recipient (to) | Encrypted in mempool | — | — |
-| Calldata | Encrypted in mempool | Encrypted on-chain | Encrypted on-chain |
+| Calldata | Encrypted in mempool | Encrypted onchain | Encrypted onchain |
 | On-chain state | — | Revealed via callback | Stored encrypted |
 | Recipient-specific access | — | — | ECIES for specific key |
 
@@ -108,6 +110,6 @@ address constant ENCRYPT_TE = 0x000000000000000000000000000000000000001D;
 
 1. **Identify Feature**: Encrypted Transactions (live), CTX/Re-encryption (beta), or Confidential Tokens (experimental)?
 2. **Select Chain**: SKALE Base Sepolia for dev, SKALE Base for production (Confidential Tokens: testnet only)
-3. **Pick Library Version**: Match your project's Solidity version (see `references/library-versions.md`)
+3. **Pick Library Version**: Match your project's Solidity version (see `references/solidity-sdk.md`)
 4. **Implement**: Follow patterns in rules files
 5. **Test**: Start on Sepolia, deploy to mainnet when ready

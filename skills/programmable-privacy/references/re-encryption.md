@@ -2,7 +2,7 @@
 
 ## What It Does
 
-Encrypt data on-chain using either the network's threshold encryption key (EncryptTE) or a specific recipient's public key (EncryptECIES). Enables private on-chain state and selective data sharing.
+Encrypt data onchain using either the network's threshold encryption key (EncryptTE) or a specific recipient's public key (EncryptECIES). Enables private onchain state and selective data sharing.
 
 ## Precompiles
 
@@ -15,7 +15,7 @@ Encrypt data on-chain using either the network's threshold encryption key (Encry
 
 ### EncryptTE — network key
 
-Only the consensus committee (2t+1 of 3t+1 validators) can decrypt. Use for private on-chain state.
+Only the consensus committee (2t+1 of 3t+1 validators) can decrypt. Use for private onchain state.
 
 ```solidity
 bytes memory encrypted = BITE.encryptTE(
@@ -45,7 +45,7 @@ struct PublicKey {
 }
 ```
 
-Uncompressed secp256k1 point (without the 0x04 prefix). Recipient generates a keypair off-chain, submits the public key on-chain.
+Uncompressed secp256k1 point (without the 0x04 prefix). Recipient generates a keypair off-chain, submits the public key onchain.
 
 ## Patterns
 

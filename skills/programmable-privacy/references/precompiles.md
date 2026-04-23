@@ -68,5 +68,5 @@ bytes memory ciphertext = BITE.encryptTE(
 | Precompile | Encrypts For | Decryptable By | Use Case |
 |---|---|---|---|
 | `0x1C` (ECIES) | Specific recipient key | Recipient's private key | Data sharing, viewer access |
-| `0x1D` (TE) | Network threshold key | BITE consensus (2t+1) | Private on-chain state |
+| `0x1D` (TE) | Network threshold key | BITE consensus (2t+1) | Private onchain state |
 | `0x1B` (CTX) | N/A (triggers decryption) | N/A (initiates callback) | Conditional reveal |

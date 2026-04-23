@@ -4,7 +4,7 @@ impact: high
 tags: [bite, ctx, conditional-transactions]
 ---
 
-# Rule: bite-conditional-transactions (CTX)
+# Rule: conditional-transactions
 
 ## Why It Matters
 
@@ -27,7 +27,7 @@ uint256 constant CTX_GAS_PAYMENT = 0.06 ether;
 
 ## Compiler Requirements
 
-See `references/library-versions.md` for version selection. Import the BITE library version matching your project's Solidity compiler.
+See `references/solidity-sdk.md` for version selection. Import the BITE library version matching your project's Solidity compiler.
 
 ## Incorrect
 
@@ -41,9 +41,11 @@ contract MyCTX {
 }
 ```
 
-```typescript
-await bite.submitCTX(data);
-// Fails: CTX requires 0.06 ETH payment
+```solidity
+// Raw low-level call — use BITE.submitCTX() instead
+(bool success, ) = BITE.SUBMIT_CTX_ADDRESS.call{ value: msg.value }(
+    abi.encodeWithSelector(BITE.submitCTX.selector, address(this), data)
+);
 ```
 
 ## Correct: Basic CTX Contract
@@ -67,14 +69,16 @@ contract SimpleSecret is IBiteSupplicant {
         pendingSecret = encryptedData;
         secretOwner = msg.sender;
 
-        (bool success, ) = BITE.SUBMIT_CTX_ADDRESS.call{ value: msg.value }(
-            abi.encodeWithSelector(
-                BITE.submitCTX.selector,
-                address(this),
-                encryptedData
-            )
+        bytes[] memory encryptedArgs = new bytes[](1);
+        encryptedArgs[0] = encryptedData;
+
+        address payable callbackSender = BITE.submitCTX(
+            BITE.SUBMIT_CTX_ADDRESS,
+            msg.value / tx.gasprice,
+            encryptedArgs,
+            new bytes[](0)
         );
-        require(success, "CTX submission failed");
+        callbackSender.transfer(msg.value);
     }
 
     function onDecrypt(
@@ -142,18 +146,18 @@ contract RockPaperScissors is IBiteSupplicant {
         game.encryptedMove2 = encryptedMove;
         game.status = GameStatus.BothCommitted;
 
-        bytes memory combinedMoves = abi.encode(
+        bytes[] memory encryptedArgs = new bytes[](1);
+        encryptedArgs[0] = abi.encode(
             gameId, game.encryptedMove1, game.encryptedMove2
         );
 
-        (bool success, ) = BITE.SUBMIT_CTX_ADDRESS.call{ value: 0.06 ether }(
-            abi.encodeWithSelector(
-                BITE.submitCTX.selector,
-                address(this),
-                combinedMoves
-            )
+        address payable callbackSender = BITE.submitCTX(
+            BITE.SUBMIT_CTX_ADDRESS,
+            msg.value / tx.gasprice,
+            encryptedArgs,
+            new bytes[](0)
         );
-        require(success, "CTX failed");
+        callbackSender.transfer(msg.value);
     }
 
     function onDecrypt(
@@ -199,7 +203,9 @@ contract RockPaperScissors is IBiteSupplicant {
               │
 2. Trigger decryption
        │
-       └───> BITE.submitCTX() precompile (0x1B)
+       └───> BITE.submitCTX() — library helper handles precompile call
+              │    → Returns callbackSender address
+              │    → callbackSender.transfer(gasPayment)
               │
 3. Consensus decrypts (2t+1 nodes)
        │
@@ -219,7 +225,8 @@ contract RockPaperScissors is IBiteSupplicant {
 
 - [ ] Import the BITE library version matching your Solidity compiler
 - [ ] Implement `IBiteSupplicant.onDecrypt()`
-- [ ] Include 0.06 ETH payment with CTX submission
+- [ ] Use `BITE.submitCTX()` (not raw `.call{value:}`)
+- [ ] Transfer payment to returned `callbackSender` address
 - [ ] Verify `msg.sender == BITE.SUBMIT_CTX_ADDRESS` in `onDecrypt`
 - [ ] Test on SKALE Base Sepolia (Chain ID: 324705682)
 

@@ -4,7 +4,7 @@
 
 ## What It Does
 
-ERC20 token where balances are encrypted on-chain. No plaintext balance is ever stored. Two encryption layers:
+ERC20 token where balances are encrypted onchain. No plaintext balance is ever stored. Two encryption layers:
 
 | Layer | Key | Purpose | Who Can Decrypt |
 |-------|-----|---------|-----------------|
@@ -40,7 +40,7 @@ transfer(from, to, amount)
 |------|--------|-----------------|
 | Holder | Transfer, approve | Only via registered viewer key |
 | Viewer | Decrypt ECIES balance off-chain | Yes (if granted access) |
-| Anyone | View encrypted ciphertext on-chain | Encrypted only |
+| Anyone | View encrypted ciphertext onchain | Encrypted only |
 
 A holder registers a viewer public key via `setViewerPublicKey()`. The holder can be their own viewer.
 

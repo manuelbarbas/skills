@@ -4,7 +4,7 @@ impact: high
 tags: [bite, sdk, typescript]
 ---
 
-# Rule: bite-sdk-usage
+# Rule: sdk-usage
 
 ## Why It Matters
 
@@ -49,40 +49,14 @@ async function sendEncryptedTx(to: string, data: string) {
 }
 ```
 
-### Get Decrypted Data
+### Get Decrypted Data (Optional)
+
+Retrieve decrypted `data` and `to` after execution. Not required for normal operation — transactions execute correctly without reading decrypted data.
 
 ```typescript
 async function getDecryptedData(txHash: string) {
     const { data, to } = await bite.getDecryptedTransactionData(txHash);
     return { data, to };
-}
-```
-
-### Committee Info
-
-```typescript
-async function checkCommittees() {
-    const committees = await bite.getCommitteesInfo();
-
-    if (committees.length === 2) {
-        console.log('⚠️ Committee rotation in progress');
-    }
-
-    return committees;
-}
-```
-
-### Batch Encryption
-
-```typescript
-async function encryptBatch(
-    transactions: Array<{ to: string; data: string }>,
-    bite: BITE
-) {
-    const committees = await bite.getCommitteesInfo();
-    return transactions.map(tx =>
-        BITE.encryptTransactionWithCommitteeInfo(tx, committees)
-    );
 }
 ```
 
@@ -109,51 +83,6 @@ async function encryptForContract(data: string, ctxSubmitterAddress: string) {
 }
 ```
 
-## Complete Example: Private Transfer
-
-```typescript
-import { BITE } from '@skalenetwork/bite';
-import { ethers, Contract } from 'ethers';
-
-const ERC20_ABI = [
-    'function transfer(address to, uint256 amount) returns (bool)',
-    'function balanceOf(address) view returns (uint256)'
-];
-
-class PrivateTokenTransfer {
-    private bite: BITE;
-    private wallet: ethers.Wallet;
-
-    constructor(rpcUrl: string, privateKey: string) {
-        this.bite = new BITE(rpcUrl);
-        this.wallet = new ethers.Wallet(privateKey, new ethers.JsonRpcProvider(rpcUrl));
-    }
-
-    async transferPrivate(tokenAddress: string, to: string, amount: bigint) {
-        const token = new Contract(tokenAddress, ERC20_ABI, this.wallet);
-        const calldata = token.interface.encodeFunctionData('transfer', [to, amount]);
-
-        const encryptedTx = await this.bite.encryptTransaction({
-            to: tokenAddress,
-            data: calldata
-        });
-
-        const tx = await this.wallet.sendTransaction({
-            ...encryptedTx,
-            gasLimit: 300_000
-        });
-
-        return await tx.wait();
-    }
-
-    async verifyTransfer(txHash: string) {
-        const { data, to } = await this.bite.getDecryptedTransactionData(txHash);
-        const token = new Contract(to, ERC20_ABI, this.wallet);
-        return token.interface.decodeFunctionData('transfer', data);
-    }
-}
-```
-
 ## Error Handling
 
 ```typescript
@@ -165,11 +94,6 @@ async function safeEncrypt(
         const encrypted = await bite.encryptTransaction(transaction);
         return { success: true, data: encrypted };
     } catch (error) {
-        if (error.message.includes('committee')) {
-            console.log('Committee rotation detected, retrying...');
-            await new Promise(r => setTimeout(r, 3000));
-            return safeEncrypt(transaction, bite);
-        }
         return { success: false, error: error.message };
     }
 }
@@ -180,9 +104,7 @@ async function safeEncrypt(
 | Method | Description | Feature |
 |--------|-------------|---------|
 | `encryptTransaction(tx)` | Encrypt transaction data | Encrypted Transactions |
-| `getDecryptedTransactionData(hash)` | Get decrypted data | Encrypted Transactions |
-| `getCommitteesInfo()` | Get committee BLS keys | Encrypted Transactions |
-| `encryptTransactionWithCommitteeInfo(tx, info)` | Encrypt with cached info | Encrypted Transactions |
+| `getDecryptedTransactionData(hash)` | Get decrypted data (optional) | Encrypted Transactions |
 | `encryptMessage(data)` | Encrypt arbitrary data (TE) | Re-encryption |
 | `encryptMessageForCTX(data, submitter)` | Encrypt for CTX with AAD | CTX |
 

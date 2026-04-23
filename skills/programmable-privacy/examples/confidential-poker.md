@@ -190,7 +190,7 @@ async function decryptMyCards(
 
 ## Privacy Guarantees
 
-- No plaintext cards stored on-chain (only inside `onDecrypt` callback)
+- No plaintext cards stored onchain (only inside `onDecrypt` callback)
 - TE layer ensures fair showdown — no single party controls decryption
 - ECIES layer lets each player view only their own cards
 - After showdown, `_resetState()` zeroes all card data

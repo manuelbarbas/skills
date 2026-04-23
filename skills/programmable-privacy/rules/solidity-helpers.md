@@ -12,7 +12,7 @@ The `@skalenetwork/bite-solidity` library provides Solidity interfaces and helpe
 
 ## Installation
 
-See `references/library-versions.md` for install commands and version selection.
+See `references/solidity-sdk.md` for install commands and version selection.
 
 ## Core Imports
 
@@ -54,7 +54,7 @@ function onDecrypt(
 
 ## Library Versions
 
-See `references/library-versions.md` for the full version table. Pick the import matching your Solidity compiler.
+See `references/solidity-sdk.md` for the full version table. Pick the import matching your Solidity compiler.
 
 ## Common Patterns
 

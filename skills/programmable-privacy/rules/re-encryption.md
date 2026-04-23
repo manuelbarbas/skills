@@ -4,13 +4,13 @@ impact: high
 tags: [bite, re-encryption, ecies, threshold-encryption]
 ---
 
-# Rule: bite-re-encryption
+# Rule: re-encryption
 
 ## Why It Matters
 
-Re-encryption is the process of encrypting data on-chain using either the network's threshold encryption key (`EncryptTE`) or a specific recipient's public key (`EncryptECIES`). This enables two key patterns:
+Re-encryption is the process of encrypting data onchain using either the network's threshold encryption key (`EncryptTE`) or a specific recipient's public key (`EncryptECIES`). This enables two key patterns:
 
-1. **Private on-chain state** — store encrypted values that only the consensus committee can decrypt (confidential-token pattern)
+1. **Private onchain state** — store encrypted values that only the consensus committee can decrypt (confidential-token pattern)
 2. **Data sharing** — decrypt via CTX, then re-encrypt for a specific recipient's key so only they can read it off-chain (confidential-poker pattern)
 
 ## Precompiles
@@ -52,7 +52,7 @@ struct PublicKey {
 }
 ```
 
-A secp256k1 public key (uncompressed point). The recipient provides this on-chain and decrypts the ciphertext off-chain with their private key.
+A secp256k1 public key (uncompressed point). The recipient provides this onchain and decrypts the ciphertext off-chain with their private key.
 
 ## Error Codes
 
@@ -230,7 +230,7 @@ Owner calls setValue(balance)
     │
     └──> EncryptTE(0x1D, abi.encode(balance))
            │
-           └──> Store encrypted bytes on-chain
+           └──> Store encrypted bytes onchain
                   │
 Owner calls grantAccess(viewer, pubKey)
     │
@@ -260,19 +260,7 @@ Viewer calls getEncryptedValue(myAddress)
 | Encrypted game state | Data sharing (TE→ECIES) | `thegreataxios/confidential-poker` |
 | Sealed-bid auctions | Private state + CTX reveal | Encrypted bids revealed after deadline |
 | Medical/financial records | Data sharing with consent | Grant access to specific researchers |
-| Private voting | Private state + CTX tally | Votes encrypted, tallied on-chain |
-
-## Foundry Configuration
-
-```toml
-# foundry.toml — recommended (BITE.sol). Use LegacyBITE.sol etc. for older compilers.
-[profile.default]
-solc_version = "0.8.27"
-evm_version = "istanbul"
-
-[dependencies]
-bite-solidity = { git = "https://github.com/skalenetwork/bite-solidity", tag = "1.0.1-stable.0" }
-```
+| Private voting | Private state + CTX tally | Votes encrypted, tallied onchain |
 
 ## Integration Checklist
 
